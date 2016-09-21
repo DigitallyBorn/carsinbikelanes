@@ -48,11 +48,20 @@ if (isset($_GET['error'])){
 <div class='settings_box'>
 <div class='settings_group'>
 <h3>MySQL:</h3>
+<?php if (parse_url(getenv('CLEARDB_DATABASE_URL') || getenv('JAWSDB_URL'))) {
+?>
+	<strong>Your database is automatically configured.</strong>
+<?php
+} else {
+?>
 <span>hostname: </span><input class='wide' type="text" name="sqlhost" placeholder="localhost"/><br>
 <span>username: </span><input class='wide' type="text" name="sqluser"/><br>
 <span>password: </span><input class='wide' type="password" name="sqlpass"/><br>
 <span>database: </span><input class='wide' type="text" name="database" placeholder="carsinbikelanes"/><br>
 <p class="tinytext">If database already exists it should be formatted as UTF-8.</p>
+<?php
+}
+?>
 </div>
 </div>
 
@@ -63,8 +72,8 @@ if (isset($_GET['error'])){
 echo dirname($_SERVER['DOCUMENT_ROOT']) . '/cibl_config';
 ?>"/><br>
 <p class="tinytext">
-The config folder contains all credentials and settings used by CIBL and as such should not allowed access by the web server. 
-By default CIBL will create this folder one directory level above http root. 
+The config folder contains all credentials and settings used by CIBL and as such should not allowed access by the web server.
+By default CIBL will create this folder one directory level above http root.
 Please enter an alternate location if the above path is not secure.</p>
 </div>
 </div>

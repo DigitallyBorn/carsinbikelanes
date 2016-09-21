@@ -18,7 +18,7 @@
 <form action='settings_update.php' method='post'>
 <input type='hidden' name='update_users' value='true'>
 <p class="tinytext">
-Note: Users do not have access to this settings page unless their admin box below is checked. 
+Note: Users do not have access to this settings page unless their admin box below is checked.
 Non-admin users only have access to the submission queue.</p>
 <div class="user_list_row">
 <div class='user_list_name'>NAME</div>
@@ -85,7 +85,7 @@ function calculate_centers() {
 <h3>Project Bounds</h3>
 <form action='settings_update.php' method='post'>
 <input type='hidden' name='update_coords' value='true'>
-<p class="tinytext">GPS coordinates representing the maximum north, south, east and west boundaries for user submissions. 
+<p class="tinytext">GPS coordinates representing the maximum north, south, east and west boundaries for user submissions.
 Submissions outside of these bounds will be rejected with an error message.</p>
 
 <?php
@@ -157,7 +157,7 @@ echo "<textarea class='settings' name='about_text'>" . $config['about_text'] . "
 <?php
 if ($config['comments'] == TRUE) {
 	echo "<span>allow comments: </span><input type='checkbox' id='comments' name='comments' checked='checked'/>"; }
-else { 
+else {
 	echo "<span>allow comments: </span><input type='checkbox' id='comments' name='comments'/>"; }
 ?>
 <br>
@@ -167,7 +167,7 @@ else {
 </form>
 </div>
 </div>
- 
+
 <div class='settings_box'>
 <div class="settings_group">
 <h3>Map Settings</h3>
@@ -224,7 +224,7 @@ terms of service</a>.
 <div class="holder" id="map_options_custom">
 <span>tiles url: </span>
 <input type='text' class='wide' id='custom_url' name='map_url' onChange='switch_map()' value='<?php echo $config['map_url']; ?>'/><br>
-<p class="tinytext"> If you have your own tile provider URL you may paste it above instead of using one of the presets. 
+<p class="tinytext"> If you have your own tile provider URL you may paste it above instead of using one of the presets.
 Read the Wikipedia page on <a href="https://en.wikipedia.org/wiki/Tiled_web_map">tiled web maps</a> for more information about this schema.</p>
 </div>
 
@@ -292,9 +292,9 @@ switch_map();
 
 function switch_map(option){
 	var newProvider = document.getElementById("provider_select").options[provider_select.selectedIndex].value;
-	
+
 	console.log("Switched map to type: " + newProvider);
-	
+
 	if (newProvider == "Custom"){
 		document.getElementById("map_options_custom").style.display = "block";
 		document.getElementById("map_options_google").style.display = "none";
@@ -303,7 +303,7 @@ function switch_map(option){
 		document.getElementById("use_providers_plugin").value = 0;
 		document.getElementById("use_google").value = 0;
 		document.getElementById("use_bing").value = 0;
-		document.getElementById("leaflet_provider").value = newProvider;	
+		document.getElementById("leaflet_provider").value = newProvider;
 		settings_map.remove();
 		document.getElementById("settings_map").innerHTML = "";
 		var url = document.getElementById("custom_url").value;
@@ -321,7 +321,7 @@ function switch_map(option){
 		document.getElementById("use_bing").value = 0;
 		document.getElementById("use_google").value = 1;
 		document.getElementById("leaflet_provider").value = newProvider;
-		
+
 		if (option == 'google1' || option == 'google2' || option == 'google3'){
 			google_bicycling = document.getElementById("google_bicycling");
 			google_transit = document.getElementById("google_transit");
@@ -353,7 +353,7 @@ function switch_map(option){
 					break;
 			}
 		}
-		
+
 		var options = <?php include $config_folder . '/google_style.php'; ?>;
 		var extra = document.getElementById("google_extra_layer").value;
 		settings_map.remove();
@@ -403,7 +403,7 @@ function switch_map(option){
 		var tiles = L.tileLayer.provider(newProvider);
 		settings_map = L.map('settings_map')
 		.addLayer(tiles)
-		.setView([<?php echo $config['center_lat'] ?>, <?php echo $config['center_long'] ?>], 12);	
+		.setView([<?php echo $config['center_lat'] ?>, <?php echo $config['center_long'] ?>], 12);
 		document.getElementById("use_providers_plugin").value = 1;
 		document.getElementById("leaflet_provider").value = newProvider;
 	}
@@ -420,15 +420,24 @@ function update_google_api(){
 <div class='settings_box'>
 <div class='settings_group'>
 <h3>MySQL</h3>
-<form action='settings_update.php' method='post'>
-<input type='hidden' name='update_database' value='true'>
-<?php
-echo "<span>hostname: </span><input type='text' class='wide' name='sqlhost' value='" . "'/><br>\n";
-echo "<span>username: </span><input type='text' class='wide' name='sqluser' value='" . "'/><br>\n";
-echo "<span>password: </span><input type='password' class='wide' name='sqlpass' value='" . "'/><br>\n";
-echo "<span>database: </span><input type='text' class='wide' name='database' value='" . "'/><br>\n";
+<?php if parse_url(getenv('CLEARDB_DATABASE_URL') || getenv('JAWSDB_URL')) {
 ?>
-<input type='submit' class='wide' name='update_database' value='Update Database'/>
-</form>
+	<strong>Your database is automatically configured.</strong>
+<?php
+} else {
+?>
+	<form action='settings_update.php' method='post'>
+	<input type='hidden' name='update_database' value='true'>
+	<?php
+	echo "<span>hostname: </span><input type='text' class='wide' name='sqlhost' value='" . "'/><br>\n";
+	echo "<span>username: </span><input type='text' class='wide' name='sqluser' value='" . "'/><br>\n";
+	echo "<span>password: </span><input type='password' class='wide' name='sqlpass' value='" . "'/><br>\n";
+	echo "<span>database: </span><input type='text' class='wide' name='database' value='" . "'/><br>\n";
+	?>
+	<input type='submit' class='wide' name='update_database' value='Update Database'/>
+	</form>
+<?php
+}
+?>
 </div>
 </div>
